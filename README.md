@@ -2,6 +2,11 @@
 
 **Requires you to have libpostal installed**
 
+build dependencies:
+* clang
+* pkg-config
+* libpostal (installed system-wide)
+
 See the tests for detailed examples.
 
 To install, simply add `https://github.com/weskerfoot/NimPostal` to your .nimble file, and make sure clang is installed, and add `switch("passL", "-L./libpostal/src/.libs -lpostal")` to config.nims in your project (or pass the linker flag manually). You may change the path to a more standard path if you're not compiling libpostal from source. Make sure it can find the shared library at runtime (may require setting `LD_LIBRARY_PATH` if you have it in a non-standard location).
