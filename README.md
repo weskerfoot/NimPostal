@@ -11,7 +11,7 @@ See the tests for detailed examples.
 
 To install, simply add `https://github.com/weskerfoot/NimPostal` to your .nimble file, and make sure the build dependencies are installed. If you installed libpostal using your system package manager (and followed the instructions to download the datasets) it should just work.
 
-You must also add this code to `config.nims` to get it to build.
+You might also add this code to `config.nims` to get it to build, depending on how you set things up.
 
 ```
 import strutils
