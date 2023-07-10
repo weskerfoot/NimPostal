@@ -1,5 +1,7 @@
 ## Access the libpostal API from Nim and parse or expand addresses!
 
+**Requires you to have libpostal installed**
+
 Example
 ```nim
 ```
