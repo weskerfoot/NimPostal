@@ -5,23 +5,35 @@
 #
 # To run these tests, simply execute `nimble test`.
 
-import unittest, strformat
+import unittest, strformat, sequtils
 import nimpostal
 
 test "can parse an address":
+  let address1 = "221B Baker St., London, UK"
+  let address2 = "221B Baker St. London, UK"
+  let address3 = "223B Baker St. London, UK"
+  let address4 = "221B Baker Ave. London, UK"
+  let address5 = "221 B Baker Ave., London, UK"
+
   setup_libpostal()
-  for component in get_address_components("221B Baker St., London, England"):
-    echo $component
-  echo ""
-  for component in get_address_components("221B Baker St., London, UK"):
-    echo $component
+  echo fmt"Testing components for {address1} and {address2}"
+  assert toSeq(get_address_components(address1)).len > 0
+  assert toSeq(get_address_components(address2)).len > 0
 
+  echo fmt"Expanding {address4}"
+  assert toSeq(get_address_expansions(address4)).len > 0
 
-  echo "Expanding 221B Baker Street., London, UK"
-  for expansion in get_address_expansions("221B Baker Street., London, UK"):
-    echo fmt"Expansion = {$expansion}"
-  echo ""
+  echo fmt"Expanding {address5}"
+  assert toSeq(get_address_expansions(address5)).len > 0
 
-  echo "Expanding 221B Baker St. London, UK"
-  for expansion in get_address_expansions("221B Baker St. London, UK"):
-    echo fmt"Expansion = {$expansion}"
+  echo fmt"Testing that {address1} equals {address2}"
+  assert addresses_equal(address1, address2)
+
+  echo fmt"Testing that {address1} does not equal {address3}"
+  assert not addresses_equal(address1, address3)
+
+  echo fmt"Testing that {address1} does not equal {address4}"
+  assert not addresses_equal(address1, address4)
+
+  echo fmt"Testing that {address4} equals {address5}"
+  assert addresses_equal(address5, address4)

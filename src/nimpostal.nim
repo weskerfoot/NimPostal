@@ -1,7 +1,7 @@
 # Copyright (C) 2023-2023 Wesley Kerfoot
 # MIT License, see license.txt
 
-import system, strutils, sequtils, tables, strformat, options, futhark, locks
+import system, strutils, sequtils, strformat, options, futhark, locks, sets
 export options
 
 const clangResourceDir {.strdefine.}: string = staticExec("clang -print-resource-dir").strip
@@ -35,3 +35,9 @@ iterator get_address_expansions*(address: string) : string =
   for i in countup(0, num_expansions.int-1):
       let expansion = cast[ptr ptr cschar](cast[int](expansions) + cast[int](i * expansions.sizeof))
       yield $expansion[]
+
+proc addresses_equal*(address1: string, address2: string) : bool =
+  let expansionsLeft = toHashSet(toSeq(get_address_expansions(address1)))
+  let expansionsRight = toHashSet(toSeq(get_address_expansions(address2)))
+
+  return intersection(expansionsLeft, expansionsRight).len > 0
