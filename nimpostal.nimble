@@ -5,7 +5,7 @@ author        = "Wesley Kerfoot"
 description   = "Parse/Normalize address strings using libpostal"
 license       = "MIT"
 srcDir        = "src"
-
+installExt    = @["nim"]
 
 # Dependencies
 
