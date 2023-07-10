@@ -18,6 +18,11 @@ proc setup_libpostal*() =
     writeLine(stderr, "Failed to setup libpostal")
     quit(1)
 
+proc teardown_libpostal*() =
+  libpostalTeardown()
+  libpostalTeardownParser()
+  libpostalTeardownLanguageClassifier()
+
 iterator get_address_components*(address: string) : (string, string) =
   let options : libpostal_address_parser_options_t = libpostalGetAddressParserDefaultOptions()
   let parsed : ptr libpostal_address_parser_response_t = libpostalParseAddress(address, options)
@@ -27,6 +32,8 @@ iterator get_address_components*(address: string) : (string, string) =
       let label = cast[ptr ptr cschar](cast[int](parsed.labels) + cast[int](i * parsed.labels.sizeof))
       yield ($label[], $component[])
 
+  libpostalAddressParserResponseDestroy(parsed)
+
 iterator get_address_expansions*(address: string) : string =
   let options : libpostal_normalize_options_t = libpostalGetDefaultOptions()
   var num_expansions: csize_t
@@ -35,6 +42,8 @@ iterator get_address_expansions*(address: string) : string =
   for i in countup(0, num_expansions.int-1):
       let expansion = cast[ptr ptr cschar](cast[int](expansions) + cast[int](i * expansions.sizeof))
       yield $expansion[]
+
+  libpostalExpansionArrayDestroy(expansions, num_expansions)
 
 proc addresses_equal*(address1: string, address2: string) : bool =
   let expansionsLeft = toHashSet(toSeq(get_address_expansions(address1)))

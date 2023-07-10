@@ -41,3 +41,5 @@ test "can parse an address":
   echo fmt"Testing that {address4} equals {address5}"
   assert addresses_equal(address5, address4)
   assert addresses_equal(address4, address5)
+
+  teardown_libpostal()
