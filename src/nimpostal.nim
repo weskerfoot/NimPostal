@@ -8,6 +8,7 @@ const clangResourceDir {.strdefine.}: string = staticExec("clang -print-resource
 importc:
   sysPath fmt"{clangResourceDir}/include"
   path: "/usr/local/include/libpostal/"
+  path: "/usr/include/libpostal/"
   "libpostal.h"
 
 proc `$`*(cst : ptr cschar) : string {.inline.} =
