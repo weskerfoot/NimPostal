@@ -28,12 +28,16 @@ test "can parse an address":
 
   echo fmt"Testing that {address1} equals {address2}"
   assert addresses_equal(address1, address2)
+  assert addresses_equal(address2, address1)
 
   echo fmt"Testing that {address1} does not equal {address3}"
   assert not addresses_equal(address1, address3)
+  assert not addresses_equal(address3, address1)
 
   echo fmt"Testing that {address1} does not equal {address4}"
   assert not addresses_equal(address1, address4)
+  assert not addresses_equal(address4, address1)
 
   echo fmt"Testing that {address4} equals {address5}"
   assert addresses_equal(address5, address4)
+  assert addresses_equal(address4, address5)
